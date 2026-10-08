@@ -33,7 +33,7 @@ export function IncidentForm({ userId, onDone }: { userId: string; onDone: (id: 
     queryFn: async () => (await supabase.from("equipment").select("id, name").eq("site_id", f.site_id).order("sort_order")).data ?? [],
   });
 
-  async function submit(e: React.FormEvent): Promise<unknown> {
+  async function submit(e: React.FormEvent): Promise<void> {
     e.preventDefault();
     const p = schema.safeParse(f);
     if (!p.success) { toast.error(p.error.issues[0]?.message ?? "ข้อมูลไม่ถูกต้อง"); return; }
