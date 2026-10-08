@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep traffic heatmap aggregation in a browser-safe pure helper and its display in a dedicated dashboard component so hourly/site calculations can be tested independently of charts.
