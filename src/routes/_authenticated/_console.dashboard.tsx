@@ -6,10 +6,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { Page, Panel, Stat } from "@/components/page";
 import { SeverityBadge, StatusBadge } from "@/components/badges";
 import { Input } from "@/components/ui/input";
+import { TrafficHeatmap } from "@/components/traffic-heatmap";
 import { fmtDuration, fmtTime, minutesBetween, todayStr } from "@/lib/labels";
 
 export const Route = createFileRoute("/_authenticated/_console/dashboard")({
-  head: () => ({ meta: [{ title: "Dashboard ผู้บริหาร — Go Inno Parking Ops" }, { name: "description", content: "ภาพรวมรายได้ ปริมาณรถ และสถานะอุปกรณ์" }] }),
+  head: () => ({ meta: [{ title: "Dashboard ผู้บริหาร — Go Inno Parking Ops" }, { name: "description", content: "ภาพรวมรายได้ ปริมาณรถ Heatmap รายชั่วโมงแยกจุดเข้า-ออก และสถานะอุปกรณ์" }, { property: "og:title", content: "Dashboard ผู้บริหาร — Go Inno Parking Ops" }, { property: "og:description", content: "ติดตามปริมาณรถรายจุดและรายชั่วโมง รายได้ และสถานะงานซ่อมลานจอดรถ" }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: Dashboard,
 });
 
@@ -95,6 +96,8 @@ function Dashboard() {
           </ResponsiveContainer>
         </Panel>
       </div>
+
+      <TrafficHeatmap sites={d.sites} rows={d.hourly} date={date} />
 
       <div className="grid gap-4 lg:grid-cols-3">
         <Panel title="แนวโน้มรายได้ 30 วัน" className="lg:col-span-2">
