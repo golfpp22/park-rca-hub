@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { Eye, EyeOff, Pencil, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Page } from "@/components/page";
 import { Button } from "@/components/ui/button";
@@ -30,6 +30,7 @@ function AdminUsers() {
   const remove = useServerFn(deleteStaff);
   const [f, setF] = useState<Form | null>(null);
   const [del, setDel] = useState<{ id: string; name: string } | null>(null);
+  const [showPw, setShowPw] = useState(false);
   const [busy, setBusy] = useState(false);
   if (!is("admin")) return <Page title="ไม่มีสิทธิ์"><p>เฉพาะผู้ดูแลระบบ</p></Page>;
 
@@ -91,7 +92,7 @@ function AdminUsers() {
               <div className="space-y-1.5"><Label>ระดับสิทธิ์</Label>
                 <Select value={f.role} onValueChange={(v) => setF({ ...f, role: v as AppRole })}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent>{(Object.keys(ROLE_LABEL) as AppRole[]).map((r) => <SelectItem key={r} value={r}>{ROLE_LABEL[r]}</SelectItem>)}</SelectContent></Select>
               </div>
-              <div className="space-y-1.5"><Label>{f.id ? "รหัสผ่านใหม่ (เว้นว่างถ้าไม่เปลี่ยน)" : "รหัสผ่าน (อย่างน้อย 8 ตัว)"}</Label><Input type="password" value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} /></div>
+              <div className="space-y-1.5 relative"><Label>{f.id ? "รหัสผ่านใหม่ (เว้นว่างถ้าไม่เปลี่ยน)" : "รหัสผ่าน (อย่างน้อย 8 ตัว)"}</Label><Input type={showPw ? "text" : "password"} className="pr-10" value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} /><button type="button" onClick={() => setShowPw((v) => !v)} aria-label={showPw ? "ซ่อนรหัสผ่าน" : "แสดงรหัสผ่าน"} className="absolute right-3 top-9 text-muted-foreground transition-colors hover:text-foreground">{showPw ? <EyeOff className="size-4" /> : <Eye className="size-4" />}</button></div>
               {f.id && <label className="flex items-center gap-2 text-sm"><Switch checked={f.active} onCheckedChange={(v) => setF({ ...f, active: v })} />เปิดใช้งานบัญชี</label>}
             </div>
           )}
