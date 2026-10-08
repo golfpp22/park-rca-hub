@@ -59,7 +59,7 @@ export const updateStaff = createServerFn({ method: "POST" })
     await supabaseAdmin.from("user_roles").delete().eq("user_id", data.id);
     await supabaseAdmin.from("user_roles").insert({ user_id: data.id, role: data.role });
     const attrs: Record<string, unknown> = { ban_duration: data.active ? "none" : "876000h" };
-    if (data.password) attrs.password = data.password;
+    if (data.password) attrs["password"] = data.password;
     await supabaseAdmin.auth.admin.updateUserById(data.id, attrs);
     return { ok: true };
   });

@@ -32,7 +32,7 @@ export const STATUS_TONE = {
   closed: "bg-muted text-muted-foreground",
 } as const;
 
-export const PROBLEM_TYPES = ["ไม่ขึ้นลง", "ขึ้นไม่สุด/ลงไม่สุด", "เสียงผิดปกติ", "ไม่อ่านป้ายทะเบียน", "เชื่อมต่อไม่ได้", "เครื่องไม่ตอบสนอง", "จ่ายบัตรไม่ได้", "ชำระเงินไม่ได้", "อื่นๆ"];
+export const PROBLEM_TYPES: [string, ...string[]] = ["ไม่ขึ้นลง", "ขึ้นไม่สุด/ลงไม่สุด", "เสียงผิดปกติ", "ไม่อ่านป้ายทะเบียน", "เชื่อมต่อไม่ได้", "เครื่องไม่ตอบสนอง", "จ่ายบัตรไม่ได้", "ชำระเงินไม่ได้", "อื่นๆ"];
 
 export const codeToEmail = (code: string) => `${code.trim().toLowerCase()}@parking.local`;
 

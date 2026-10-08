@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import type { TablesUpdate } from "@/integrations/supabase/types";
 import { STATUS_LABEL, fmtDateTime, fmtDuration, minutesBetween } from "@/lib/labels";
 import { uploadPhotos } from "@/lib/photos";
 import { useStaffList } from "@/lib/use-me";
@@ -45,7 +46,7 @@ export function IncidentDetail({ id, userId, canAssign }: { id: string; userId: 
     setBusy(true);
     try {
       const after = files.length ? await uploadPhotos(`incidents/${id}/after`, files) : [];
-      const update: Record<string, unknown> = {};
+      const update: TablesUpdate<"incidents"> = {};
       if (f.status && f.status !== inc!.status) update.status = f.status;
       if (f.assignee && f.assignee !== inc!.assignee_id) { update.assignee_id = f.assignee; if (inc!.status === "open" && !f.status) update.status = "assigned"; }
       if (f.root_cause !== undefined) update.root_cause = f.root_cause;
@@ -56,7 +57,7 @@ export function IncidentDetail({ id, userId, canAssign }: { id: string; userId: 
       const { error } = await supabase.from("incidents").update(update).eq("id", id);
       if (error) throw error;
       const actions: string[] = [];
-      if (update.assignee_id) actions.push(`มอบหมายให้ ${nameOf(update.assignee_id as string)}`);
+      if (update.assignee_id) actions.push(`มอบหมายให้ ${nameOf(update.assignee_id)}`);
       if (update.status) actions.push(`เปลี่ยนสถานะเป็น ${STATUS_LABEL[update.status as Status]}`);
       if (!actions.length) actions.push("อัปเดตข้อมูล");
       await supabase.from("incident_logs").insert({ incident_id: id, actor_id: userId, action: actions.join(" · "), note: f.note || null });

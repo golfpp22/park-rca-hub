@@ -13,7 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 export const Route = createFileRoute("/_authenticated/app/discount")({ component: Discount });
 
-const TYPES = ["ร้านค้า", "สมาชิก", "VIP", "ผู้ติดต่อราชการ", "อื่นๆ"];
+const TYPES: [string, ...string[]] = ["ร้านค้า", "สมาชิก", "VIP", "ผู้ติดต่อราชการ", "อื่นๆ"];
 const schema = z.object({
   plate: z.string().trim().min(2, "ระบุทะเบียนรถ").max(20),
   amount: z.coerce.number().min(0).max(100000),
