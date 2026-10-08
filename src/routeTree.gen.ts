@@ -10,33 +10,119 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as SetupRouteImport } from './routes/setup'
+import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
+import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
+import { Route as AuthenticatedAppInspectIndexRouteImport } from './routes/_authenticated/app.inspect.index'
+import { Route as AuthenticatedAppInspectSiteIdIndexRouteImport } from './routes/_authenticated/app.inspect.$siteId.index'
+import { Route as AuthenticatedAppInspectSiteIdEquipmentIdRouteImport } from './routes/_authenticated/app.inspect.$siteId.$equipmentId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SetupRoute = SetupRouteImport.update({
+  id: '/setup',
+  path: '/setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const AuthenticatedAppInspectIndexRoute =
+  AuthenticatedAppInspectIndexRouteImport.update({
+    id: '/inspect/',
+    path: '/inspect/',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppInspectSiteIdIndexRoute =
+  AuthenticatedAppInspectSiteIdIndexRouteImport.update({
+    id: '/inspect/$siteId/',
+    path: '/inspect/$siteId/',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppInspectSiteIdEquipmentIdRoute =
+  AuthenticatedAppInspectSiteIdEquipmentIdRouteImport.update({
+    id: '/inspect/$siteId/$equipmentId',
+    path: '/inspect/$siteId/$equipmentId',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/setup': typeof SetupRoute
+  '/app': typeof AuthenticatedAppRouteWithChildren
+  '/app/': typeof AuthenticatedAppIndexRoute
+  '/app/inspect/': typeof AuthenticatedAppInspectIndexRoute
+  '/app/inspect/$siteId/$equipmentId': typeof AuthenticatedAppInspectSiteIdEquipmentIdRoute
+  '/app/inspect/$siteId/': typeof AuthenticatedAppInspectSiteIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/setup': typeof SetupRoute
+  '/app': typeof AuthenticatedAppIndexRoute
+  '/app/inspect': typeof AuthenticatedAppInspectIndexRoute
+  '/app/inspect/$siteId/$equipmentId': typeof AuthenticatedAppInspectSiteIdEquipmentIdRoute
+  '/app/inspect/$siteId': typeof AuthenticatedAppInspectSiteIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/setup': typeof SetupRoute
+  '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
+  '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
+  '/_authenticated/app/inspect/': typeof AuthenticatedAppInspectIndexRoute
+  '/_authenticated/app/inspect/$siteId/$equipmentId': typeof AuthenticatedAppInspectSiteIdEquipmentIdRoute
+  '/_authenticated/app/inspect/$siteId/': typeof AuthenticatedAppInspectSiteIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/setup'
+    | '/app'
+    | '/app/'
+    | '/app/inspect/'
+    | '/app/inspect/$siteId/$equipmentId'
+    | '/app/inspect/$siteId/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/setup'
+    | '/app'
+    | '/app/inspect'
+    | '/app/inspect/$siteId/$equipmentId'
+    | '/app/inspect/$siteId'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/setup'
+    | '/_authenticated/app'
+    | '/_authenticated/app/'
+    | '/_authenticated/app/inspect/'
+    | '/_authenticated/app/inspect/$siteId/$equipmentId'
+    | '/_authenticated/app/inspect/$siteId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  SetupRoute: typeof SetupRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +134,92 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/setup': {
+      id: '/setup'
+      path: '/setup'
+      fullPath: '/setup'
+      preLoaderRoute: typeof SetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/app': {
+      id: '/_authenticated/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AuthenticatedAppRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/app/': {
+      id: '/_authenticated/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AuthenticatedAppIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/inspect/': {
+      id: '/_authenticated/app/inspect/'
+      path: '/inspect'
+      fullPath: '/app/inspect/'
+      preLoaderRoute: typeof AuthenticatedAppInspectIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/inspect/$siteId/': {
+      id: '/_authenticated/app/inspect/$siteId/'
+      path: '/inspect/$siteId'
+      fullPath: '/app/inspect/$siteId/'
+      preLoaderRoute: typeof AuthenticatedAppInspectSiteIdIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/inspect/$siteId/$equipmentId': {
+      id: '/_authenticated/app/inspect/$siteId/$equipmentId'
+      path: '/inspect/$siteId/$equipmentId'
+      fullPath: '/app/inspect/$siteId/$equipmentId'
+      preLoaderRoute: typeof AuthenticatedAppInspectSiteIdEquipmentIdRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
   }
 }
 
+interface AuthenticatedAppRouteChildren {
+  AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
+  AuthenticatedAppInspectIndexRoute: typeof AuthenticatedAppInspectIndexRoute
+  AuthenticatedAppInspectSiteIdEquipmentIdRoute: typeof AuthenticatedAppInspectSiteIdEquipmentIdRoute
+  AuthenticatedAppInspectSiteIdIndexRoute: typeof AuthenticatedAppInspectSiteIdIndexRoute
+}
+
+const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
+  AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
+  AuthenticatedAppInspectIndexRoute: AuthenticatedAppInspectIndexRoute,
+  AuthenticatedAppInspectSiteIdEquipmentIdRoute:
+    AuthenticatedAppInspectSiteIdEquipmentIdRoute,
+  AuthenticatedAppInspectSiteIdIndexRoute:
+    AuthenticatedAppInspectSiteIdIndexRoute,
+}
+
+const AuthenticatedAppRouteWithChildren =
+  AuthenticatedAppRoute._addFileChildren(AuthenticatedAppRouteChildren)
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAppRoute: typeof AuthenticatedAppRouteWithChildren
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAppRoute: AuthenticatedAppRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  SetupRoute: SetupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
