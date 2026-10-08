@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Car, Loader2, LockKeyhole, UserRound } from "lucide-react";
+import { Car, Eye, EyeOff, Loader2, LockKeyhole, UserRound } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -33,6 +33,7 @@ function Login() {
   const navigate = useNavigate();
   const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
+  const [showPw, setShowPw] = useState(false);
   const [busy, setBusy] = useState(false);
   const setup = useQuery({ queryKey: ["needsSetup"], queryFn: () => needsSetup() });
 
@@ -84,7 +85,10 @@ function Login() {
             <Label htmlFor="pw">รหัสผ่าน</Label>
             <div className="relative">
               <LockKeyhole className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-              <Input id="pw" type="password" className="h-11 pl-9" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" />
+              <Input id="pw" type={showPw ? "text" : "password"} className="h-11 pl-9 pr-10" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" />
+              <button type="button" onClick={() => setShowPw((v) => !v)} aria-label={showPw ? "ซ่อนรหัสผ่าน" : "แสดงรหัสผ่าน"} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground">
+                {showPw ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+              </button>
             </div>
           </div>
           <Button type="submit" className="h-11 w-full" disabled={busy}>
