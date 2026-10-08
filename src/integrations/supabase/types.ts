@@ -455,6 +455,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      daily_totals: {
+        Args: { _from: string; _to: string }
+        Returns: {
+          entries: number
+          exits: number
+          revenue: number
+          stat_date: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
