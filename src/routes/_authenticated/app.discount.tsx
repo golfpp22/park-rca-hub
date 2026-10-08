@@ -29,7 +29,7 @@ function Discount() {
     queryKey: ["discounts-recent"],
     queryFn: async () => (await supabase.from("discounts").select("*, sites(name)").order("created_at", { ascending: false }).limit(20)).data ?? [],
   });
-  async function submit(e: React.FormEvent): Promise<unknown> {
+  async function submit(e: React.FormEvent): Promise<void> {
     e.preventDefault();
     const p = schema.safeParse(f);
     if (!p.success) { toast.error(p.error.issues[0]?.message ?? "ข้อมูลไม่ถูกต้อง"); return; }

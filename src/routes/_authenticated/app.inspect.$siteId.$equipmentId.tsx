@@ -41,7 +41,7 @@ function CheckEquipment() {
     if (q.data) setChecks(Object.fromEntries(q.data.items.map((i) => [i.item, true])));
   }, [q.data]);
 
-  async function save(): Promise<unknown> {
+  async function save(): Promise<void> {
     if (!q.data?.inspectionId) { toast.error("ไม่พบใบตรวจเช็ควันนี้"); return; }
     if (status === "problem" && !note.trim()) { toast.error("กรุณาระบุรายละเอียดปัญหา"); return; }
     setBusy(true);

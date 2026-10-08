@@ -40,7 +40,7 @@ function Login() {
     supabase.auth.getUser().then(({ data }) => data.user && goHome(navigate, data.user.id));
   }, [navigate]);
 
-  async function submit(e: React.FormEvent): Promise<unknown> {
+  async function submit(e: React.FormEvent): Promise<void> {
     e.preventDefault();
     if (!/^[A-Za-z0-9_-]{2,30}$/.test(code.trim())) { toast.error("รหัสพนักงานไม่ถูกต้อง"); return; }
     setBusy(true);

@@ -18,7 +18,7 @@ const TYPES = [["lpr", "LPR Camera"], ["barrier", "Barrier"], ["loop", "Loop Sen
 function AdminChecklists() {
   const q = useQuery({ queryKey: ["checklists"], queryFn: async () => (await supabase.from("checklist_templates").select("*").order("sort_order")).data ?? [] });
   const [draft, setDraft] = useState<Record<string, string>>({});
-  async function add(type: string): Promise<unknown> {
+  async function add(type: string): Promise<void> {
     const item = (draft[type] ?? "").trim();
     if (!item) return;
     const { error } = await supabase.from("checklist_templates").insert({ equipment_type: type, item: item.slice(0, 200), sort_order: 99 });
