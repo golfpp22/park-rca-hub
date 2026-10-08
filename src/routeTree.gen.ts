@@ -10,33 +10,292 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as SetupRouteImport } from './routes/setup'
+import { Route as AuthenticatedConsoleRouteImport } from './routes/_authenticated/_console'
+import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
+import { Route as AuthenticatedConsoleDashboardRouteImport } from './routes/_authenticated/_console.dashboard'
+import { Route as AuthenticatedConsoleDiscountsRouteImport } from './routes/_authenticated/_console.discounts'
+import { Route as AuthenticatedConsoleInspectionsRouteImport } from './routes/_authenticated/_console.inspections'
+import { Route as AuthenticatedConsoleKpiRouteImport } from './routes/_authenticated/_console.kpi'
+import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
+import { Route as AuthenticatedAppDiscountRouteImport } from './routes/_authenticated/app.discount'
+import { Route as AuthenticatedAppReportRouteImport } from './routes/_authenticated/app.report'
+import { Route as AuthenticatedConsoleAdminIndexRouteImport } from './routes/_authenticated/_console.admin.index'
+import { Route as AuthenticatedConsoleAdminChecklistsRouteImport } from './routes/_authenticated/_console.admin.checklists'
+import { Route as AuthenticatedConsoleAdminSitesRouteImport } from './routes/_authenticated/_console.admin.sites'
+import { Route as AuthenticatedConsoleIncidentsIndexRouteImport } from './routes/_authenticated/_console.incidents.index'
+import { Route as AuthenticatedConsoleIncidentsIdRouteImport } from './routes/_authenticated/_console.incidents.$id'
+import { Route as AuthenticatedAppInspectIndexRouteImport } from './routes/_authenticated/app.inspect.index'
+import { Route as AuthenticatedAppJobsIndexRouteImport } from './routes/_authenticated/app.jobs.index'
+import { Route as AuthenticatedAppJobsIdRouteImport } from './routes/_authenticated/app.jobs.$id'
+import { Route as AuthenticatedAppInspectSiteIdIndexRouteImport } from './routes/_authenticated/app.inspect.$siteId.index'
+import { Route as AuthenticatedAppInspectSiteIdEquipmentIdRouteImport } from './routes/_authenticated/app.inspect.$siteId.$equipmentId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SetupRoute = SetupRouteImport.update({
+  id: '/setup',
+  path: '/setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedConsoleRoute = AuthenticatedConsoleRouteImport.update({
+  id: '/_console',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedConsoleDashboardRoute =
+  AuthenticatedConsoleDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => AuthenticatedConsoleRoute,
+  } as any)
+const AuthenticatedConsoleDiscountsRoute =
+  AuthenticatedConsoleDiscountsRouteImport.update({
+    id: '/discounts',
+    path: '/discounts',
+    getParentRoute: () => AuthenticatedConsoleRoute,
+  } as any)
+const AuthenticatedConsoleInspectionsRoute =
+  AuthenticatedConsoleInspectionsRouteImport.update({
+    id: '/inspections',
+    path: '/inspections',
+    getParentRoute: () => AuthenticatedConsoleRoute,
+  } as any)
+const AuthenticatedConsoleKpiRoute = AuthenticatedConsoleKpiRouteImport.update({
+  id: '/kpi',
+  path: '/kpi',
+  getParentRoute: () => AuthenticatedConsoleRoute,
+} as any)
+const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const AuthenticatedAppDiscountRoute =
+  AuthenticatedAppDiscountRouteImport.update({
+    id: '/discount',
+    path: '/discount',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppReportRoute = AuthenticatedAppReportRouteImport.update({
+  id: '/report',
+  path: '/report',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const AuthenticatedConsoleAdminIndexRoute =
+  AuthenticatedConsoleAdminIndexRouteImport.update({
+    id: '/admin/',
+    path: '/admin/',
+    getParentRoute: () => AuthenticatedConsoleRoute,
+  } as any)
+const AuthenticatedConsoleAdminChecklistsRoute =
+  AuthenticatedConsoleAdminChecklistsRouteImport.update({
+    id: '/admin/checklists',
+    path: '/admin/checklists',
+    getParentRoute: () => AuthenticatedConsoleRoute,
+  } as any)
+const AuthenticatedConsoleAdminSitesRoute =
+  AuthenticatedConsoleAdminSitesRouteImport.update({
+    id: '/admin/sites',
+    path: '/admin/sites',
+    getParentRoute: () => AuthenticatedConsoleRoute,
+  } as any)
+const AuthenticatedConsoleIncidentsIndexRoute =
+  AuthenticatedConsoleIncidentsIndexRouteImport.update({
+    id: '/incidents/',
+    path: '/incidents/',
+    getParentRoute: () => AuthenticatedConsoleRoute,
+  } as any)
+const AuthenticatedConsoleIncidentsIdRoute =
+  AuthenticatedConsoleIncidentsIdRouteImport.update({
+    id: '/incidents/$id',
+    path: '/incidents/$id',
+    getParentRoute: () => AuthenticatedConsoleRoute,
+  } as any)
+const AuthenticatedAppInspectIndexRoute =
+  AuthenticatedAppInspectIndexRouteImport.update({
+    id: '/inspect/',
+    path: '/inspect/',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppJobsIndexRoute =
+  AuthenticatedAppJobsIndexRouteImport.update({
+    id: '/jobs/',
+    path: '/jobs/',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppJobsIdRoute = AuthenticatedAppJobsIdRouteImport.update({
+  id: '/jobs/$id',
+  path: '/jobs/$id',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const AuthenticatedAppInspectSiteIdIndexRoute =
+  AuthenticatedAppInspectSiteIdIndexRouteImport.update({
+    id: '/inspect/$siteId/',
+    path: '/inspect/$siteId/',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppInspectSiteIdEquipmentIdRoute =
+  AuthenticatedAppInspectSiteIdEquipmentIdRouteImport.update({
+    id: '/inspect/$siteId/$equipmentId',
+    path: '/inspect/$siteId/$equipmentId',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/setup': typeof SetupRoute
+  '/app': typeof AuthenticatedAppRouteWithChildren
+  '/dashboard': typeof AuthenticatedConsoleDashboardRoute
+  '/discounts': typeof AuthenticatedConsoleDiscountsRoute
+  '/inspections': typeof AuthenticatedConsoleInspectionsRoute
+  '/kpi': typeof AuthenticatedConsoleKpiRoute
+  '/app/discount': typeof AuthenticatedAppDiscountRoute
+  '/app/report': typeof AuthenticatedAppReportRoute
+  '/app/': typeof AuthenticatedAppIndexRoute
+  '/admin/checklists': typeof AuthenticatedConsoleAdminChecklistsRoute
+  '/admin/sites': typeof AuthenticatedConsoleAdminSitesRoute
+  '/incidents/$id': typeof AuthenticatedConsoleIncidentsIdRoute
+  '/app/jobs/$id': typeof AuthenticatedAppJobsIdRoute
+  '/admin/': typeof AuthenticatedConsoleAdminIndexRoute
+  '/incidents/': typeof AuthenticatedConsoleIncidentsIndexRoute
+  '/app/inspect/': typeof AuthenticatedAppInspectIndexRoute
+  '/app/jobs/': typeof AuthenticatedAppJobsIndexRoute
+  '/app/inspect/$siteId/$equipmentId': typeof AuthenticatedAppInspectSiteIdEquipmentIdRoute
+  '/app/inspect/$siteId/': typeof AuthenticatedAppInspectSiteIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/setup': typeof SetupRoute
+  '/dashboard': typeof AuthenticatedConsoleDashboardRoute
+  '/discounts': typeof AuthenticatedConsoleDiscountsRoute
+  '/inspections': typeof AuthenticatedConsoleInspectionsRoute
+  '/kpi': typeof AuthenticatedConsoleKpiRoute
+  '/app/discount': typeof AuthenticatedAppDiscountRoute
+  '/app/report': typeof AuthenticatedAppReportRoute
+  '/app': typeof AuthenticatedAppIndexRoute
+  '/admin/checklists': typeof AuthenticatedConsoleAdminChecklistsRoute
+  '/admin/sites': typeof AuthenticatedConsoleAdminSitesRoute
+  '/incidents/$id': typeof AuthenticatedConsoleIncidentsIdRoute
+  '/app/jobs/$id': typeof AuthenticatedAppJobsIdRoute
+  '/admin': typeof AuthenticatedConsoleAdminIndexRoute
+  '/incidents': typeof AuthenticatedConsoleIncidentsIndexRoute
+  '/app/inspect': typeof AuthenticatedAppInspectIndexRoute
+  '/app/jobs': typeof AuthenticatedAppJobsIndexRoute
+  '/app/inspect/$siteId/$equipmentId': typeof AuthenticatedAppInspectSiteIdEquipmentIdRoute
+  '/app/inspect/$siteId': typeof AuthenticatedAppInspectSiteIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/setup': typeof SetupRoute
+  '/_authenticated/_console': typeof AuthenticatedConsoleRouteWithChildren
+  '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
+  '/_authenticated/_console/dashboard': typeof AuthenticatedConsoleDashboardRoute
+  '/_authenticated/_console/discounts': typeof AuthenticatedConsoleDiscountsRoute
+  '/_authenticated/_console/inspections': typeof AuthenticatedConsoleInspectionsRoute
+  '/_authenticated/_console/kpi': typeof AuthenticatedConsoleKpiRoute
+  '/_authenticated/app/discount': typeof AuthenticatedAppDiscountRoute
+  '/_authenticated/app/report': typeof AuthenticatedAppReportRoute
+  '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
+  '/_authenticated/_console/admin/checklists': typeof AuthenticatedConsoleAdminChecklistsRoute
+  '/_authenticated/_console/admin/sites': typeof AuthenticatedConsoleAdminSitesRoute
+  '/_authenticated/_console/incidents/$id': typeof AuthenticatedConsoleIncidentsIdRoute
+  '/_authenticated/app/jobs/$id': typeof AuthenticatedAppJobsIdRoute
+  '/_authenticated/_console/admin/': typeof AuthenticatedConsoleAdminIndexRoute
+  '/_authenticated/_console/incidents/': typeof AuthenticatedConsoleIncidentsIndexRoute
+  '/_authenticated/app/inspect/': typeof AuthenticatedAppInspectIndexRoute
+  '/_authenticated/app/jobs/': typeof AuthenticatedAppJobsIndexRoute
+  '/_authenticated/app/inspect/$siteId/$equipmentId': typeof AuthenticatedAppInspectSiteIdEquipmentIdRoute
+  '/_authenticated/app/inspect/$siteId/': typeof AuthenticatedAppInspectSiteIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/setup'
+    | '/app'
+    | '/dashboard'
+    | '/discounts'
+    | '/inspections'
+    | '/kpi'
+    | '/app/discount'
+    | '/app/report'
+    | '/app/'
+    | '/admin/checklists'
+    | '/admin/sites'
+    | '/incidents/$id'
+    | '/app/jobs/$id'
+    | '/admin/'
+    | '/incidents/'
+    | '/app/inspect/'
+    | '/app/jobs/'
+    | '/app/inspect/$siteId/$equipmentId'
+    | '/app/inspect/$siteId/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/setup'
+    | '/dashboard'
+    | '/discounts'
+    | '/inspections'
+    | '/kpi'
+    | '/app/discount'
+    | '/app/report'
+    | '/app'
+    | '/admin/checklists'
+    | '/admin/sites'
+    | '/incidents/$id'
+    | '/app/jobs/$id'
+    | '/admin'
+    | '/incidents'
+    | '/app/inspect'
+    | '/app/jobs'
+    | '/app/inspect/$siteId/$equipmentId'
+    | '/app/inspect/$siteId'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/setup'
+    | '/_authenticated/_console'
+    | '/_authenticated/app'
+    | '/_authenticated/_console/dashboard'
+    | '/_authenticated/_console/discounts'
+    | '/_authenticated/_console/inspections'
+    | '/_authenticated/_console/kpi'
+    | '/_authenticated/app/discount'
+    | '/_authenticated/app/report'
+    | '/_authenticated/app/'
+    | '/_authenticated/_console/admin/checklists'
+    | '/_authenticated/_console/admin/sites'
+    | '/_authenticated/_console/incidents/$id'
+    | '/_authenticated/app/jobs/$id'
+    | '/_authenticated/_console/admin/'
+    | '/_authenticated/_console/incidents/'
+    | '/_authenticated/app/inspect/'
+    | '/_authenticated/app/jobs/'
+    | '/_authenticated/app/inspect/$siteId/$equipmentId'
+    | '/_authenticated/app/inspect/$siteId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  SetupRoute: typeof SetupRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +307,229 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/setup': {
+      id: '/setup'
+      path: '/setup'
+      fullPath: '/setup'
+      preLoaderRoute: typeof SetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/_console': {
+      id: '/_authenticated/_console'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedConsoleRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/app': {
+      id: '/_authenticated/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AuthenticatedAppRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/_console/dashboard': {
+      id: '/_authenticated/_console/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedConsoleDashboardRouteImport
+      parentRoute: typeof AuthenticatedConsoleRoute
+    }
+    '/_authenticated/_console/discounts': {
+      id: '/_authenticated/_console/discounts'
+      path: '/discounts'
+      fullPath: '/discounts'
+      preLoaderRoute: typeof AuthenticatedConsoleDiscountsRouteImport
+      parentRoute: typeof AuthenticatedConsoleRoute
+    }
+    '/_authenticated/_console/inspections': {
+      id: '/_authenticated/_console/inspections'
+      path: '/inspections'
+      fullPath: '/inspections'
+      preLoaderRoute: typeof AuthenticatedConsoleInspectionsRouteImport
+      parentRoute: typeof AuthenticatedConsoleRoute
+    }
+    '/_authenticated/_console/kpi': {
+      id: '/_authenticated/_console/kpi'
+      path: '/kpi'
+      fullPath: '/kpi'
+      preLoaderRoute: typeof AuthenticatedConsoleKpiRouteImport
+      parentRoute: typeof AuthenticatedConsoleRoute
+    }
+    '/_authenticated/app/': {
+      id: '/_authenticated/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AuthenticatedAppIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/discount': {
+      id: '/_authenticated/app/discount'
+      path: '/discount'
+      fullPath: '/app/discount'
+      preLoaderRoute: typeof AuthenticatedAppDiscountRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/report': {
+      id: '/_authenticated/app/report'
+      path: '/report'
+      fullPath: '/app/report'
+      preLoaderRoute: typeof AuthenticatedAppReportRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/_console/admin/': {
+      id: '/_authenticated/_console/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedConsoleAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedConsoleRoute
+    }
+    '/_authenticated/_console/admin/checklists': {
+      id: '/_authenticated/_console/admin/checklists'
+      path: '/admin/checklists'
+      fullPath: '/admin/checklists'
+      preLoaderRoute: typeof AuthenticatedConsoleAdminChecklistsRouteImport
+      parentRoute: typeof AuthenticatedConsoleRoute
+    }
+    '/_authenticated/_console/admin/sites': {
+      id: '/_authenticated/_console/admin/sites'
+      path: '/admin/sites'
+      fullPath: '/admin/sites'
+      preLoaderRoute: typeof AuthenticatedConsoleAdminSitesRouteImport
+      parentRoute: typeof AuthenticatedConsoleRoute
+    }
+    '/_authenticated/_console/incidents/': {
+      id: '/_authenticated/_console/incidents/'
+      path: '/incidents'
+      fullPath: '/incidents/'
+      preLoaderRoute: typeof AuthenticatedConsoleIncidentsIndexRouteImport
+      parentRoute: typeof AuthenticatedConsoleRoute
+    }
+    '/_authenticated/_console/incidents/$id': {
+      id: '/_authenticated/_console/incidents/$id'
+      path: '/incidents/$id'
+      fullPath: '/incidents/$id'
+      preLoaderRoute: typeof AuthenticatedConsoleIncidentsIdRouteImport
+      parentRoute: typeof AuthenticatedConsoleRoute
+    }
+    '/_authenticated/app/inspect/': {
+      id: '/_authenticated/app/inspect/'
+      path: '/inspect'
+      fullPath: '/app/inspect/'
+      preLoaderRoute: typeof AuthenticatedAppInspectIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/jobs/': {
+      id: '/_authenticated/app/jobs/'
+      path: '/jobs'
+      fullPath: '/app/jobs/'
+      preLoaderRoute: typeof AuthenticatedAppJobsIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/jobs/$id': {
+      id: '/_authenticated/app/jobs/$id'
+      path: '/jobs/$id'
+      fullPath: '/app/jobs/$id'
+      preLoaderRoute: typeof AuthenticatedAppJobsIdRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/inspect/$siteId/': {
+      id: '/_authenticated/app/inspect/$siteId/'
+      path: '/inspect/$siteId'
+      fullPath: '/app/inspect/$siteId/'
+      preLoaderRoute: typeof AuthenticatedAppInspectSiteIdIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/inspect/$siteId/$equipmentId': {
+      id: '/_authenticated/app/inspect/$siteId/$equipmentId'
+      path: '/inspect/$siteId/$equipmentId'
+      fullPath: '/app/inspect/$siteId/$equipmentId'
+      preLoaderRoute: typeof AuthenticatedAppInspectSiteIdEquipmentIdRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
   }
 }
 
+interface AuthenticatedConsoleRouteChildren {
+  AuthenticatedConsoleDashboardRoute: typeof AuthenticatedConsoleDashboardRoute
+  AuthenticatedConsoleDiscountsRoute: typeof AuthenticatedConsoleDiscountsRoute
+  AuthenticatedConsoleInspectionsRoute: typeof AuthenticatedConsoleInspectionsRoute
+  AuthenticatedConsoleKpiRoute: typeof AuthenticatedConsoleKpiRoute
+  AuthenticatedConsoleAdminChecklistsRoute: typeof AuthenticatedConsoleAdminChecklistsRoute
+  AuthenticatedConsoleAdminSitesRoute: typeof AuthenticatedConsoleAdminSitesRoute
+  AuthenticatedConsoleIncidentsIdRoute: typeof AuthenticatedConsoleIncidentsIdRoute
+  AuthenticatedConsoleAdminIndexRoute: typeof AuthenticatedConsoleAdminIndexRoute
+  AuthenticatedConsoleIncidentsIndexRoute: typeof AuthenticatedConsoleIncidentsIndexRoute
+}
+
+const AuthenticatedConsoleRouteChildren: AuthenticatedConsoleRouteChildren = {
+  AuthenticatedConsoleDashboardRoute: AuthenticatedConsoleDashboardRoute,
+  AuthenticatedConsoleDiscountsRoute: AuthenticatedConsoleDiscountsRoute,
+  AuthenticatedConsoleInspectionsRoute: AuthenticatedConsoleInspectionsRoute,
+  AuthenticatedConsoleKpiRoute: AuthenticatedConsoleKpiRoute,
+  AuthenticatedConsoleAdminChecklistsRoute:
+    AuthenticatedConsoleAdminChecklistsRoute,
+  AuthenticatedConsoleAdminSitesRoute: AuthenticatedConsoleAdminSitesRoute,
+  AuthenticatedConsoleIncidentsIdRoute: AuthenticatedConsoleIncidentsIdRoute,
+  AuthenticatedConsoleAdminIndexRoute: AuthenticatedConsoleAdminIndexRoute,
+  AuthenticatedConsoleIncidentsIndexRoute:
+    AuthenticatedConsoleIncidentsIndexRoute,
+}
+
+const AuthenticatedConsoleRouteWithChildren =
+  AuthenticatedConsoleRoute._addFileChildren(AuthenticatedConsoleRouteChildren)
+
+interface AuthenticatedAppRouteChildren {
+  AuthenticatedAppDiscountRoute: typeof AuthenticatedAppDiscountRoute
+  AuthenticatedAppReportRoute: typeof AuthenticatedAppReportRoute
+  AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
+  AuthenticatedAppJobsIdRoute: typeof AuthenticatedAppJobsIdRoute
+  AuthenticatedAppInspectIndexRoute: typeof AuthenticatedAppInspectIndexRoute
+  AuthenticatedAppJobsIndexRoute: typeof AuthenticatedAppJobsIndexRoute
+  AuthenticatedAppInspectSiteIdEquipmentIdRoute: typeof AuthenticatedAppInspectSiteIdEquipmentIdRoute
+  AuthenticatedAppInspectSiteIdIndexRoute: typeof AuthenticatedAppInspectSiteIdIndexRoute
+}
+
+const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
+  AuthenticatedAppDiscountRoute: AuthenticatedAppDiscountRoute,
+  AuthenticatedAppReportRoute: AuthenticatedAppReportRoute,
+  AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
+  AuthenticatedAppJobsIdRoute: AuthenticatedAppJobsIdRoute,
+  AuthenticatedAppInspectIndexRoute: AuthenticatedAppInspectIndexRoute,
+  AuthenticatedAppJobsIndexRoute: AuthenticatedAppJobsIndexRoute,
+  AuthenticatedAppInspectSiteIdEquipmentIdRoute:
+    AuthenticatedAppInspectSiteIdEquipmentIdRoute,
+  AuthenticatedAppInspectSiteIdIndexRoute:
+    AuthenticatedAppInspectSiteIdIndexRoute,
+}
+
+const AuthenticatedAppRouteWithChildren =
+  AuthenticatedAppRoute._addFileChildren(AuthenticatedAppRouteChildren)
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedConsoleRoute: typeof AuthenticatedConsoleRouteWithChildren
+  AuthenticatedAppRoute: typeof AuthenticatedAppRouteWithChildren
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedConsoleRoute: AuthenticatedConsoleRouteWithChildren,
+  AuthenticatedAppRoute: AuthenticatedAppRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  SetupRoute: SetupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
