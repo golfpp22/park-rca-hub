@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getRouteApi } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
-import type { AppRole } from "./labels";
+import { PROBLEM_TYPES, type AppRole } from "./labels";
 
 const authRoute = getRouteApi("/_authenticated");
 
