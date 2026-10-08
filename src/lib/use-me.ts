@@ -47,6 +47,15 @@ export function useSites() {
   });
 }
 
+export function useProblemTypes() {
+  const q = useQuery({
+    queryKey: ["problem-types-active"],
+    queryFn: async () => (await supabase.from("problem_types").select("label").eq("active", true).order("sort_order")).data ?? [],
+  });
+  const list = q.data?.map((r) => r.label) ?? [];
+  return { ...q, list: list.length ? list : [...PROBLEM_TYPES] };
+}
+
 export async function signOut(navigate: (o: { to: string; replace?: boolean }) => void, qc: { clear: () => void; cancelQueries: () => Promise<void> }) {
   await qc.cancelQueries();
   qc.clear();
