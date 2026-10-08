@@ -54,7 +54,7 @@ function CheckEquipment() {
       );
       if (error) throw error;
       if (status === "problem") {
-        const category = problem || types.list[0];
+        const category = problem || types.list[0] || "อื่นๆ";
         const { data: inc } = await supabase.from("incidents").insert({
           site_id: siteId, equipment_id: equipmentId, title: `${q.data.eq?.name} ${category}`, category, severity, description: note, photos, reporter_id: user.id,
         }).select("id").single();
