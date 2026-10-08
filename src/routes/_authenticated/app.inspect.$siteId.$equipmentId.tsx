@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { useMe } from "@/lib/use-me";
-import { PROBLEM_TYPES, todayStr } from "@/lib/labels";
+import { useMe, useProblemTypes } from "@/lib/use-me";
+import { todayStr } from "@/lib/labels";
 import { uploadPhotos } from "@/lib/photos";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -22,7 +22,8 @@ function CheckEquipment() {
   const qc = useQueryClient();
   const [status, setStatus] = useState<"ok" | "problem" | "note">("ok");
   const [checks, setChecks] = useState<Record<string, boolean>>({});
-  const [problem, setProblem] = useState(PROBLEM_TYPES[0]);
+  const types = useProblemTypes();
+  const [problem, setProblem] = useState("");
   const [severity, setSeverity] = useState<"low" | "medium" | "high" | "critical">("medium");
   const [note, setNote] = useState("");
   const [files, setFiles] = useState<File[]>([]);
@@ -53,8 +54,9 @@ function CheckEquipment() {
       );
       if (error) throw error;
       if (status === "problem") {
+        const category = problem || types.list[0] || "อื่นๆ";
         const { data: inc } = await supabase.from("incidents").insert({
-          site_id: siteId, equipment_id: equipmentId, title: `${q.data.eq?.name} ${problem}`, category: problem, severity, description: note, photos, reporter_id: user.id,
+          site_id: siteId, equipment_id: equipmentId, title: `${q.data.eq?.name} ${category}`, category, severity, description: note, photos, reporter_id: user.id,
         }).select("id").single();
         if (inc) await supabase.from("incident_logs").insert({ incident_id: inc.id, actor_id: user.id, action: "แจ้งปัญหาจากการตรวจเช็ค", note });
         await supabase.from("equipment").update({ status: "fault" }).eq("id", equipmentId);
@@ -101,7 +103,7 @@ function CheckEquipment() {
             <div>
               <p className="mb-2 text-xs text-muted-foreground">ประเภทปัญหา</p>
               <div className="flex flex-wrap gap-2">
-                {PROBLEM_TYPES.map((p) => (
+                {types.list.map((p) => (
                   <button key={p} type="button" onClick={() => setProblem(p)} className={cn("rounded-full border px-3 py-1 text-xs", problem === p ? "border-primary bg-primary text-primary-foreground" : "")}>{p}</button>
                 ))}
               </div>

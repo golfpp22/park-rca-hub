@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getRouteApi } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
-import type { AppRole } from "./labels";
+import { PROBLEM_TYPES, type AppRole } from "./labels";
 
 const authRoute = getRouteApi("/_authenticated");
 
@@ -45,6 +45,15 @@ export function useSites() {
     queryKey: ["sites"],
     queryFn: async () => (await supabase.from("sites").select("*").order("code")).data ?? [],
   });
+}
+
+export function useProblemTypes() {
+  const q = useQuery({
+    queryKey: ["problem-types-active"],
+    queryFn: async () => (await supabase.from("problem_types").select("label").eq("active", true).order("sort_order")).data ?? [],
+  });
+  const list = q.data?.map((r) => r.label) ?? [];
+  return { ...q, list: list.length ? list : [...PROBLEM_TYPES] };
 }
 
 export async function signOut(navigate: (o: { to: string; replace?: boolean }) => void, qc: { clear: () => void; cancelQueries: () => Promise<void> }) {

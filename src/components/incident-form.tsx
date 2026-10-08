@@ -4,9 +4,8 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
-import { PROBLEM_TYPES } from "@/lib/labels";
 import { uploadPhotos } from "@/lib/photos";
-import { useSites } from "@/lib/use-me";
+import { useProblemTypes, useSites } from "@/lib/use-me";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,7 +23,8 @@ const schema = z.object({
 
 export function IncidentForm({ userId, onDone }: { userId: string; onDone: (id: string) => void }) {
   const sites = useSites();
-  const [f, setF] = useState({ site_id: "", equipment_id: "", title: "", category: PROBLEM_TYPES[0], severity: "medium" as "low" | "medium" | "high" | "critical", description: "" });
+  const types = useProblemTypes();
+  const [f, setF] = useState({ site_id: "", equipment_id: "", title: "", category: "", severity: "medium" as "low" | "medium" | "high" | "critical", description: "" });
   const [files, setFiles] = useState<File[]>([]);
   const [busy, setBusy] = useState(false);
   const eq = useQuery({
@@ -40,7 +40,7 @@ export function IncidentForm({ userId, onDone }: { userId: string; onDone: (id: 
     setBusy(true);
     try {
       const photos = files.length ? await uploadPhotos("incidents", files) : [];
-      const { data, error } = await supabase.from("incidents").insert({ ...f, photos, reporter_id: userId }).select("id").single();
+      const { data, error } = await supabase.from("incidents").insert({ ...f, category: f.category || types.list[0] || "อื่นๆ", photos, reporter_id: userId }).select("id").single();
       if (error) throw error;
       await supabase.from("incident_logs").insert({ incident_id: data.id, actor_id: userId, action: "แจ้งปัญหา", note: f.description || null });
       await supabase.from("equipment").update({ status: "fault" }).eq("id", f.equipment_id);
@@ -74,7 +74,7 @@ export function IncidentForm({ userId, onDone }: { userId: string; onDone: (id: 
       <div className="space-y-1.5">
         <Label>ประเภทปัญหา</Label>
         <div className="flex flex-wrap gap-2">
-          {PROBLEM_TYPES.map((p) => (
+          {types.list.map((p) => (
             <button key={p} type="button" onClick={() => setF({ ...f, category: p, title: f.title || p })} className={cn("rounded-full border px-3 py-1 text-xs", f.category === p && "border-primary bg-primary text-primary-foreground")}>{p}</button>
           ))}
         </div>

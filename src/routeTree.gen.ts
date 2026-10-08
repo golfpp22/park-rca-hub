@@ -23,6 +23,7 @@ import { Route as AuthenticatedAppDiscountRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAppReportRouteImport } from './routes/_authenticated/app.report'
 import { Route as AuthenticatedConsoleAdminIndexRouteImport } from './routes/_authenticated/_console.admin.index'
 import { Route as AuthenticatedConsoleAdminChecklistsRouteImport } from './routes/_authenticated/_console.admin.checklists'
+import { Route as AuthenticatedConsoleAdminProblemsRouteImport } from './routes/_authenticated/_console.admin.problems'
 import { Route as AuthenticatedConsoleAdminSitesRouteImport } from './routes/_authenticated/_console.admin.sites'
 import { Route as AuthenticatedConsoleIncidentsIndexRouteImport } from './routes/_authenticated/_console.incidents.index'
 import { Route as AuthenticatedConsoleIncidentsIdRouteImport } from './routes/_authenticated/_console.incidents.$id'
@@ -106,6 +107,12 @@ const AuthenticatedConsoleAdminChecklistsRoute =
     path: '/admin/checklists',
     getParentRoute: () => AuthenticatedConsoleRoute,
   } as any)
+const AuthenticatedConsoleAdminProblemsRoute =
+  AuthenticatedConsoleAdminProblemsRouteImport.update({
+    id: '/admin/problems',
+    path: '/admin/problems',
+    getParentRoute: () => AuthenticatedConsoleRoute,
+  } as any)
 const AuthenticatedConsoleAdminSitesRoute =
   AuthenticatedConsoleAdminSitesRouteImport.update({
     id: '/admin/sites',
@@ -166,6 +173,7 @@ export interface FileRoutesByFullPath {
   '/app/report': typeof AuthenticatedAppReportRoute
   '/app/': typeof AuthenticatedAppIndexRoute
   '/admin/checklists': typeof AuthenticatedConsoleAdminChecklistsRoute
+  '/admin/problems': typeof AuthenticatedConsoleAdminProblemsRoute
   '/admin/sites': typeof AuthenticatedConsoleAdminSitesRoute
   '/incidents/$id': typeof AuthenticatedConsoleIncidentsIdRoute
   '/app/jobs/$id': typeof AuthenticatedAppJobsIdRoute
@@ -187,6 +195,7 @@ export interface FileRoutesByTo {
   '/app/report': typeof AuthenticatedAppReportRoute
   '/app': typeof AuthenticatedAppIndexRoute
   '/admin/checklists': typeof AuthenticatedConsoleAdminChecklistsRoute
+  '/admin/problems': typeof AuthenticatedConsoleAdminProblemsRoute
   '/admin/sites': typeof AuthenticatedConsoleAdminSitesRoute
   '/incidents/$id': typeof AuthenticatedConsoleIncidentsIdRoute
   '/app/jobs/$id': typeof AuthenticatedAppJobsIdRoute
@@ -212,6 +221,7 @@ export interface FileRoutesById {
   '/_authenticated/app/report': typeof AuthenticatedAppReportRoute
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
   '/_authenticated/_console/admin/checklists': typeof AuthenticatedConsoleAdminChecklistsRoute
+  '/_authenticated/_console/admin/problems': typeof AuthenticatedConsoleAdminProblemsRoute
   '/_authenticated/_console/admin/sites': typeof AuthenticatedConsoleAdminSitesRoute
   '/_authenticated/_console/incidents/$id': typeof AuthenticatedConsoleIncidentsIdRoute
   '/_authenticated/app/jobs/$id': typeof AuthenticatedAppJobsIdRoute
@@ -236,6 +246,7 @@ export interface FileRouteTypes {
     | '/app/report'
     | '/app/'
     | '/admin/checklists'
+    | '/admin/problems'
     | '/admin/sites'
     | '/incidents/$id'
     | '/app/jobs/$id'
@@ -257,6 +268,7 @@ export interface FileRouteTypes {
     | '/app/report'
     | '/app'
     | '/admin/checklists'
+    | '/admin/problems'
     | '/admin/sites'
     | '/incidents/$id'
     | '/app/jobs/$id'
@@ -281,6 +293,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app/report'
     | '/_authenticated/app/'
     | '/_authenticated/_console/admin/checklists'
+    | '/_authenticated/_console/admin/problems'
     | '/_authenticated/_console/admin/sites'
     | '/_authenticated/_console/incidents/$id'
     | '/_authenticated/app/jobs/$id'
@@ -398,6 +411,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedConsoleAdminChecklistsRouteImport
       parentRoute: typeof AuthenticatedConsoleRoute
     }
+    '/_authenticated/_console/admin/problems': {
+      id: '/_authenticated/_console/admin/problems'
+      path: '/admin/problems'
+      fullPath: '/admin/problems'
+      preLoaderRoute: typeof AuthenticatedConsoleAdminProblemsRouteImport
+      parentRoute: typeof AuthenticatedConsoleRoute
+    }
     '/_authenticated/_console/admin/sites': {
       id: '/_authenticated/_console/admin/sites'
       path: '/admin/sites'
@@ -463,6 +483,7 @@ interface AuthenticatedConsoleRouteChildren {
   AuthenticatedConsoleInspectionsRoute: typeof AuthenticatedConsoleInspectionsRoute
   AuthenticatedConsoleKpiRoute: typeof AuthenticatedConsoleKpiRoute
   AuthenticatedConsoleAdminChecklistsRoute: typeof AuthenticatedConsoleAdminChecklistsRoute
+  AuthenticatedConsoleAdminProblemsRoute: typeof AuthenticatedConsoleAdminProblemsRoute
   AuthenticatedConsoleAdminSitesRoute: typeof AuthenticatedConsoleAdminSitesRoute
   AuthenticatedConsoleIncidentsIdRoute: typeof AuthenticatedConsoleIncidentsIdRoute
   AuthenticatedConsoleAdminIndexRoute: typeof AuthenticatedConsoleAdminIndexRoute
@@ -476,6 +497,8 @@ const AuthenticatedConsoleRouteChildren: AuthenticatedConsoleRouteChildren = {
   AuthenticatedConsoleKpiRoute: AuthenticatedConsoleKpiRoute,
   AuthenticatedConsoleAdminChecklistsRoute:
     AuthenticatedConsoleAdminChecklistsRoute,
+  AuthenticatedConsoleAdminProblemsRoute:
+    AuthenticatedConsoleAdminProblemsRoute,
   AuthenticatedConsoleAdminSitesRoute: AuthenticatedConsoleAdminSitesRoute,
   AuthenticatedConsoleIncidentsIdRoute: AuthenticatedConsoleIncidentsIdRoute,
   AuthenticatedConsoleAdminIndexRoute: AuthenticatedConsoleAdminIndexRoute,

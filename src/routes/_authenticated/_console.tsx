@@ -1,6 +1,6 @@
 import { createFileRoute, Link, Navigate, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { BarChart3, Car, ClipboardList, Gauge, ListChecks, LogOut, MapPin, Percent, Smartphone, Trophy, Users, Wrench } from "lucide-react";
+import { AlertTriangle, BarChart3, Car, ClipboardList, Gauge, ListChecks, LogOut, MapPin, Percent, Smartphone, Trophy, Users, Wrench } from "lucide-react";
 import { signOut, useMe } from "@/lib/use-me";
 import { ROLE_LABEL } from "@/lib/labels";
 import { cn } from "@/lib/utils";
@@ -18,6 +18,7 @@ const ADMIN = [
   { to: "/admin", label: "ผู้ใช้งาน & สิทธิ์", icon: Users },
   { to: "/admin/sites", label: "จุดติดตั้ง & อุปกรณ์", icon: MapPin },
   { to: "/admin/checklists", label: "รายการตรวจเช็ค", icon: ListChecks },
+  { to: "/admin/problems", label: "ประเภทปัญหา", icon: AlertTriangle },
 ] as const;
 
 function ConsoleLayout() {
