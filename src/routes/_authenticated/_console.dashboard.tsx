@@ -56,7 +56,7 @@ function Dashboard() {
   const openInc = d.incidents.filter((i) => !["resolved", "closed"].includes(i.status));
   const resolved = d.incidents.filter((i) => i.resolved_at);
   const avgFix = resolved.length ? Math.round(resolved.reduce((a, i) => a + (minutesBetween(i.created_at, i.resolved_at) ?? 0), 0) / resolved.length) : null;
-  const sevCount = (["critical", "high", "medium", "low"] as const).map((s, i) => ({ name: { critical: "วิกฤต", high: "สูง", medium: "กลาง", low: "ต่ำ" }[s], value: d.incidents.filter((x) => x.severity === s).length, fill: C[[3, 2, 0, 4][i]] }));
+  const sevCount = (["critical", "high", "medium", "low"] as const).map((s, i) => ({ name: { critical: "วิกฤต", high: "สูง", medium: "กลาง", low: "ต่ำ" }[s], value: d.incidents.filter((x) => x.severity === s).length, fill: C[[3, 2, 0, 4][i] ?? 0] }));
   const insDone = d.ins.filter((i) => i.completed_at).length;
   const types = ["lpr", "barrier", "loop", "kiosk", "intercom", "cctv", "network", "power"];
 

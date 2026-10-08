@@ -29,12 +29,12 @@ function Discount() {
     queryKey: ["discounts-recent"],
     queryFn: async () => (await supabase.from("discounts").select("*, sites(name)").order("created_at", { ascending: false }).limit(20)).data ?? [],
   });
-  async function submit(e: React.FormEvent) {
+  async function submit(e: React.FormEvent): Promise<unknown> {
     e.preventDefault();
     const p = schema.safeParse(f);
-    if (!p.success) return toast.error(p.error.issues[0].message);
+    if (!p.success) { toast.error(p.error.issues[0]?.message ?? "ข้อมูลไม่ถูกต้อง"); return; }
     const { error } = await supabase.from("discounts").insert({ plate: p.data.plate, amount: p.data.amount, reason: p.data.reason || null, discount_type: f.discount_type, site_id: f.site_id || null, recorded_by: user.id });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("บันทึกส่วนลดแล้ว");
     setF({ ...f, plate: "", amount: "", reason: "" });
     qc.invalidateQueries({ queryKey: ["discounts-recent"] });

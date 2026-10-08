@@ -40,13 +40,13 @@ function Login() {
     supabase.auth.getUser().then(({ data }) => data.user && goHome(navigate, data.user.id));
   }, [navigate]);
 
-  async function submit(e: React.FormEvent) {
+  async function submit(e: React.FormEvent): Promise<unknown> {
     e.preventDefault();
-    if (!/^[A-Za-z0-9_-]{2,30}$/.test(code.trim())) return toast.error("รหัสพนักงานไม่ถูกต้อง");
+    if (!/^[A-Za-z0-9_-]{2,30}$/.test(code.trim())) { toast.error("รหัสพนักงานไม่ถูกต้อง"); return; }
     setBusy(true);
     const { data, error } = await supabase.auth.signInWithPassword({ email: codeToEmail(code), password });
     setBusy(false);
-    if (error || !data.user) return toast.error("รหัสพนักงานหรือรหัสผ่านไม่ถูกต้อง");
+    if (error || !data.user) { toast.error("รหัสพนักงานหรือรหัสผ่านไม่ถูกต้อง"); return; }
     goHome(navigate, data.user.id);
   }
 

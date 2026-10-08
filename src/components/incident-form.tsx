@@ -33,10 +33,10 @@ export function IncidentForm({ userId, onDone }: { userId: string; onDone: (id: 
     queryFn: async () => (await supabase.from("equipment").select("id, name").eq("site_id", f.site_id).order("sort_order")).data ?? [],
   });
 
-  async function submit(e: React.FormEvent) {
+  async function submit(e: React.FormEvent): Promise<unknown> {
     e.preventDefault();
     const p = schema.safeParse(f);
-    if (!p.success) return toast.error(p.error.issues[0].message);
+    if (!p.success) { toast.error(p.error.issues[0]?.message ?? "ข้อมูลไม่ถูกต้อง"); return; }
     setBusy(true);
     try {
       const photos = files.length ? await uploadPhotos("incidents", files) : [];
