@@ -14,7 +14,11 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as SetupRouteImport } from './routes/setup'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
 import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
+import { Route as AuthenticatedAppDiscountRouteImport } from './routes/_authenticated/app.discount'
+import { Route as AuthenticatedAppReportRouteImport } from './routes/_authenticated/app.report'
 import { Route as AuthenticatedAppInspectIndexRouteImport } from './routes/_authenticated/app.inspect.index'
+import { Route as AuthenticatedAppJobsIndexRouteImport } from './routes/_authenticated/app.jobs.index'
+import { Route as AuthenticatedAppJobsIdRouteImport } from './routes/_authenticated/app.jobs.$id'
 import { Route as AuthenticatedAppInspectSiteIdIndexRouteImport } from './routes/_authenticated/app.inspect.$siteId.index'
 import { Route as AuthenticatedAppInspectSiteIdEquipmentIdRouteImport } from './routes/_authenticated/app.inspect.$siteId.$equipmentId'
 
@@ -42,12 +46,34 @@ const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
+const AuthenticatedAppDiscountRoute =
+  AuthenticatedAppDiscountRouteImport.update({
+    id: '/discount',
+    path: '/discount',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppReportRoute = AuthenticatedAppReportRouteImport.update({
+  id: '/report',
+  path: '/report',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
 const AuthenticatedAppInspectIndexRoute =
   AuthenticatedAppInspectIndexRouteImport.update({
     id: '/inspect/',
     path: '/inspect/',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
+const AuthenticatedAppJobsIndexRoute =
+  AuthenticatedAppJobsIndexRouteImport.update({
+    id: '/jobs/',
+    path: '/jobs/',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppJobsIdRoute = AuthenticatedAppJobsIdRouteImport.update({
+  id: '/jobs/$id',
+  path: '/jobs/$id',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
 const AuthenticatedAppInspectSiteIdIndexRoute =
   AuthenticatedAppInspectSiteIdIndexRouteImport.update({
     id: '/inspect/$siteId/',
@@ -65,16 +91,24 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/setup': typeof SetupRoute
   '/app': typeof AuthenticatedAppRouteWithChildren
+  '/app/discount': typeof AuthenticatedAppDiscountRoute
+  '/app/report': typeof AuthenticatedAppReportRoute
   '/app/': typeof AuthenticatedAppIndexRoute
+  '/app/jobs/$id': typeof AuthenticatedAppJobsIdRoute
   '/app/inspect/': typeof AuthenticatedAppInspectIndexRoute
+  '/app/jobs/': typeof AuthenticatedAppJobsIndexRoute
   '/app/inspect/$siteId/$equipmentId': typeof AuthenticatedAppInspectSiteIdEquipmentIdRoute
   '/app/inspect/$siteId/': typeof AuthenticatedAppInspectSiteIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/setup': typeof SetupRoute
+  '/app/discount': typeof AuthenticatedAppDiscountRoute
+  '/app/report': typeof AuthenticatedAppReportRoute
   '/app': typeof AuthenticatedAppIndexRoute
+  '/app/jobs/$id': typeof AuthenticatedAppJobsIdRoute
   '/app/inspect': typeof AuthenticatedAppInspectIndexRoute
+  '/app/jobs': typeof AuthenticatedAppJobsIndexRoute
   '/app/inspect/$siteId/$equipmentId': typeof AuthenticatedAppInspectSiteIdEquipmentIdRoute
   '/app/inspect/$siteId': typeof AuthenticatedAppInspectSiteIdIndexRoute
 }
@@ -84,8 +118,12 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/setup': typeof SetupRoute
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
+  '/_authenticated/app/discount': typeof AuthenticatedAppDiscountRoute
+  '/_authenticated/app/report': typeof AuthenticatedAppReportRoute
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
+  '/_authenticated/app/jobs/$id': typeof AuthenticatedAppJobsIdRoute
   '/_authenticated/app/inspect/': typeof AuthenticatedAppInspectIndexRoute
+  '/_authenticated/app/jobs/': typeof AuthenticatedAppJobsIndexRoute
   '/_authenticated/app/inspect/$siteId/$equipmentId': typeof AuthenticatedAppInspectSiteIdEquipmentIdRoute
   '/_authenticated/app/inspect/$siteId/': typeof AuthenticatedAppInspectSiteIdIndexRoute
 }
@@ -95,16 +133,24 @@ export interface FileRouteTypes {
     | '/'
     | '/setup'
     | '/app'
+    | '/app/discount'
+    | '/app/report'
     | '/app/'
+    | '/app/jobs/$id'
     | '/app/inspect/'
+    | '/app/jobs/'
     | '/app/inspect/$siteId/$equipmentId'
     | '/app/inspect/$siteId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/setup'
+    | '/app/discount'
+    | '/app/report'
     | '/app'
+    | '/app/jobs/$id'
     | '/app/inspect'
+    | '/app/jobs'
     | '/app/inspect/$siteId/$equipmentId'
     | '/app/inspect/$siteId'
   id:
@@ -113,8 +159,12 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/setup'
     | '/_authenticated/app'
+    | '/_authenticated/app/discount'
+    | '/_authenticated/app/report'
     | '/_authenticated/app/'
+    | '/_authenticated/app/jobs/$id'
     | '/_authenticated/app/inspect/'
+    | '/_authenticated/app/jobs/'
     | '/_authenticated/app/inspect/$siteId/$equipmentId'
     | '/_authenticated/app/inspect/$siteId/'
   fileRoutesById: FileRoutesById
@@ -162,11 +212,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppIndexRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/discount': {
+      id: '/_authenticated/app/discount'
+      path: '/discount'
+      fullPath: '/app/discount'
+      preLoaderRoute: typeof AuthenticatedAppDiscountRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/report': {
+      id: '/_authenticated/app/report'
+      path: '/report'
+      fullPath: '/app/report'
+      preLoaderRoute: typeof AuthenticatedAppReportRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/inspect/': {
       id: '/_authenticated/app/inspect/'
       path: '/inspect'
       fullPath: '/app/inspect/'
       preLoaderRoute: typeof AuthenticatedAppInspectIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/jobs/': {
+      id: '/_authenticated/app/jobs/'
+      path: '/jobs'
+      fullPath: '/app/jobs/'
+      preLoaderRoute: typeof AuthenticatedAppJobsIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/jobs/$id': {
+      id: '/_authenticated/app/jobs/$id'
+      path: '/jobs/$id'
+      fullPath: '/app/jobs/$id'
+      preLoaderRoute: typeof AuthenticatedAppJobsIdRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
     '/_authenticated/app/inspect/$siteId/': {
@@ -187,15 +265,23 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAppRouteChildren {
+  AuthenticatedAppDiscountRoute: typeof AuthenticatedAppDiscountRoute
+  AuthenticatedAppReportRoute: typeof AuthenticatedAppReportRoute
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
+  AuthenticatedAppJobsIdRoute: typeof AuthenticatedAppJobsIdRoute
   AuthenticatedAppInspectIndexRoute: typeof AuthenticatedAppInspectIndexRoute
+  AuthenticatedAppJobsIndexRoute: typeof AuthenticatedAppJobsIndexRoute
   AuthenticatedAppInspectSiteIdEquipmentIdRoute: typeof AuthenticatedAppInspectSiteIdEquipmentIdRoute
   AuthenticatedAppInspectSiteIdIndexRoute: typeof AuthenticatedAppInspectSiteIdIndexRoute
 }
 
 const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
+  AuthenticatedAppDiscountRoute: AuthenticatedAppDiscountRoute,
+  AuthenticatedAppReportRoute: AuthenticatedAppReportRoute,
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
+  AuthenticatedAppJobsIdRoute: AuthenticatedAppJobsIdRoute,
   AuthenticatedAppInspectIndexRoute: AuthenticatedAppInspectIndexRoute,
+  AuthenticatedAppJobsIndexRoute: AuthenticatedAppJobsIndexRoute,
   AuthenticatedAppInspectSiteIdEquipmentIdRoute:
     AuthenticatedAppInspectSiteIdEquipmentIdRoute,
   AuthenticatedAppInspectSiteIdIndexRoute:
