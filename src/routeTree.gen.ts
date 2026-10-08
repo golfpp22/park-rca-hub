@@ -12,10 +12,14 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as SetupRouteImport } from './routes/setup'
+import { Route as AuthenticatedConsoleRouteImport } from './routes/_authenticated/_console'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
+import { Route as AuthenticatedConsoleDashboardRouteImport } from './routes/_authenticated/_console.dashboard'
 import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
 import { Route as AuthenticatedAppDiscountRouteImport } from './routes/_authenticated/app.discount'
 import { Route as AuthenticatedAppReportRouteImport } from './routes/_authenticated/app.report'
+import { Route as AuthenticatedConsoleIncidentsIndexRouteImport } from './routes/_authenticated/_console.incidents.index'
+import { Route as AuthenticatedConsoleIncidentsIdRouteImport } from './routes/_authenticated/_console.incidents.$id'
 import { Route as AuthenticatedAppInspectIndexRouteImport } from './routes/_authenticated/app.inspect.index'
 import { Route as AuthenticatedAppJobsIndexRouteImport } from './routes/_authenticated/app.jobs.index'
 import { Route as AuthenticatedAppJobsIdRouteImport } from './routes/_authenticated/app.jobs.$id'
@@ -36,11 +40,21 @@ const SetupRoute = SetupRouteImport.update({
   path: '/setup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedConsoleRoute = AuthenticatedConsoleRouteImport.update({
+  id: '/_console',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
   id: '/app',
   path: '/app',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedConsoleDashboardRoute =
+  AuthenticatedConsoleDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => AuthenticatedConsoleRoute,
+  } as any)
 const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -57,6 +71,18 @@ const AuthenticatedAppReportRoute = AuthenticatedAppReportRouteImport.update({
   path: '/report',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
+const AuthenticatedConsoleIncidentsIndexRoute =
+  AuthenticatedConsoleIncidentsIndexRouteImport.update({
+    id: '/incidents/',
+    path: '/incidents/',
+    getParentRoute: () => AuthenticatedConsoleRoute,
+  } as any)
+const AuthenticatedConsoleIncidentsIdRoute =
+  AuthenticatedConsoleIncidentsIdRouteImport.update({
+    id: '/incidents/$id',
+    path: '/incidents/$id',
+    getParentRoute: () => AuthenticatedConsoleRoute,
+  } as any)
 const AuthenticatedAppInspectIndexRoute =
   AuthenticatedAppInspectIndexRouteImport.update({
     id: '/inspect/',
@@ -91,10 +117,13 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/setup': typeof SetupRoute
   '/app': typeof AuthenticatedAppRouteWithChildren
+  '/dashboard': typeof AuthenticatedConsoleDashboardRoute
   '/app/discount': typeof AuthenticatedAppDiscountRoute
   '/app/report': typeof AuthenticatedAppReportRoute
   '/app/': typeof AuthenticatedAppIndexRoute
+  '/incidents/$id': typeof AuthenticatedConsoleIncidentsIdRoute
   '/app/jobs/$id': typeof AuthenticatedAppJobsIdRoute
+  '/incidents/': typeof AuthenticatedConsoleIncidentsIndexRoute
   '/app/inspect/': typeof AuthenticatedAppInspectIndexRoute
   '/app/jobs/': typeof AuthenticatedAppJobsIndexRoute
   '/app/inspect/$siteId/$equipmentId': typeof AuthenticatedAppInspectSiteIdEquipmentIdRoute
@@ -103,10 +132,13 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/setup': typeof SetupRoute
+  '/dashboard': typeof AuthenticatedConsoleDashboardRoute
   '/app/discount': typeof AuthenticatedAppDiscountRoute
   '/app/report': typeof AuthenticatedAppReportRoute
   '/app': typeof AuthenticatedAppIndexRoute
+  '/incidents/$id': typeof AuthenticatedConsoleIncidentsIdRoute
   '/app/jobs/$id': typeof AuthenticatedAppJobsIdRoute
+  '/incidents': typeof AuthenticatedConsoleIncidentsIndexRoute
   '/app/inspect': typeof AuthenticatedAppInspectIndexRoute
   '/app/jobs': typeof AuthenticatedAppJobsIndexRoute
   '/app/inspect/$siteId/$equipmentId': typeof AuthenticatedAppInspectSiteIdEquipmentIdRoute
@@ -117,11 +149,15 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/setup': typeof SetupRoute
+  '/_authenticated/_console': typeof AuthenticatedConsoleRouteWithChildren
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
+  '/_authenticated/_console/dashboard': typeof AuthenticatedConsoleDashboardRoute
   '/_authenticated/app/discount': typeof AuthenticatedAppDiscountRoute
   '/_authenticated/app/report': typeof AuthenticatedAppReportRoute
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
+  '/_authenticated/_console/incidents/$id': typeof AuthenticatedConsoleIncidentsIdRoute
   '/_authenticated/app/jobs/$id': typeof AuthenticatedAppJobsIdRoute
+  '/_authenticated/_console/incidents/': typeof AuthenticatedConsoleIncidentsIndexRoute
   '/_authenticated/app/inspect/': typeof AuthenticatedAppInspectIndexRoute
   '/_authenticated/app/jobs/': typeof AuthenticatedAppJobsIndexRoute
   '/_authenticated/app/inspect/$siteId/$equipmentId': typeof AuthenticatedAppInspectSiteIdEquipmentIdRoute
@@ -133,10 +169,13 @@ export interface FileRouteTypes {
     | '/'
     | '/setup'
     | '/app'
+    | '/dashboard'
     | '/app/discount'
     | '/app/report'
     | '/app/'
+    | '/incidents/$id'
     | '/app/jobs/$id'
+    | '/incidents/'
     | '/app/inspect/'
     | '/app/jobs/'
     | '/app/inspect/$siteId/$equipmentId'
@@ -145,10 +184,13 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/setup'
+    | '/dashboard'
     | '/app/discount'
     | '/app/report'
     | '/app'
+    | '/incidents/$id'
     | '/app/jobs/$id'
+    | '/incidents'
     | '/app/inspect'
     | '/app/jobs'
     | '/app/inspect/$siteId/$equipmentId'
@@ -158,11 +200,15 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/setup'
+    | '/_authenticated/_console'
     | '/_authenticated/app'
+    | '/_authenticated/_console/dashboard'
     | '/_authenticated/app/discount'
     | '/_authenticated/app/report'
     | '/_authenticated/app/'
+    | '/_authenticated/_console/incidents/$id'
     | '/_authenticated/app/jobs/$id'
+    | '/_authenticated/_console/incidents/'
     | '/_authenticated/app/inspect/'
     | '/_authenticated/app/jobs/'
     | '/_authenticated/app/inspect/$siteId/$equipmentId'
@@ -198,12 +244,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SetupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/_console': {
+      id: '/_authenticated/_console'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedConsoleRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/app': {
       id: '/_authenticated/app'
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AuthenticatedAppRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/_console/dashboard': {
+      id: '/_authenticated/_console/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedConsoleDashboardRouteImport
+      parentRoute: typeof AuthenticatedConsoleRoute
     }
     '/_authenticated/app/': {
       id: '/_authenticated/app/'
@@ -225,6 +285,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/report'
       preLoaderRoute: typeof AuthenticatedAppReportRouteImport
       parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/_console/incidents/': {
+      id: '/_authenticated/_console/incidents/'
+      path: '/incidents'
+      fullPath: '/incidents/'
+      preLoaderRoute: typeof AuthenticatedConsoleIncidentsIndexRouteImport
+      parentRoute: typeof AuthenticatedConsoleRoute
+    }
+    '/_authenticated/_console/incidents/$id': {
+      id: '/_authenticated/_console/incidents/$id'
+      path: '/incidents/$id'
+      fullPath: '/incidents/$id'
+      preLoaderRoute: typeof AuthenticatedConsoleIncidentsIdRouteImport
+      parentRoute: typeof AuthenticatedConsoleRoute
     }
     '/_authenticated/app/inspect/': {
       id: '/_authenticated/app/inspect/'
@@ -264,6 +338,22 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedConsoleRouteChildren {
+  AuthenticatedConsoleDashboardRoute: typeof AuthenticatedConsoleDashboardRoute
+  AuthenticatedConsoleIncidentsIdRoute: typeof AuthenticatedConsoleIncidentsIdRoute
+  AuthenticatedConsoleIncidentsIndexRoute: typeof AuthenticatedConsoleIncidentsIndexRoute
+}
+
+const AuthenticatedConsoleRouteChildren: AuthenticatedConsoleRouteChildren = {
+  AuthenticatedConsoleDashboardRoute: AuthenticatedConsoleDashboardRoute,
+  AuthenticatedConsoleIncidentsIdRoute: AuthenticatedConsoleIncidentsIdRoute,
+  AuthenticatedConsoleIncidentsIndexRoute:
+    AuthenticatedConsoleIncidentsIndexRoute,
+}
+
+const AuthenticatedConsoleRouteWithChildren =
+  AuthenticatedConsoleRoute._addFileChildren(AuthenticatedConsoleRouteChildren)
+
 interface AuthenticatedAppRouteChildren {
   AuthenticatedAppDiscountRoute: typeof AuthenticatedAppDiscountRoute
   AuthenticatedAppReportRoute: typeof AuthenticatedAppReportRoute
@@ -292,10 +382,12 @@ const AuthenticatedAppRouteWithChildren =
   AuthenticatedAppRoute._addFileChildren(AuthenticatedAppRouteChildren)
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedConsoleRoute: typeof AuthenticatedConsoleRouteWithChildren
   AuthenticatedAppRoute: typeof AuthenticatedAppRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedConsoleRoute: AuthenticatedConsoleRouteWithChildren,
   AuthenticatedAppRoute: AuthenticatedAppRouteWithChildren,
 }
 
