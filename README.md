@@ -87,7 +87,6 @@ src/
     use-me.ts                   useMe, useSites, useProblemTypes, signOut
     photos.ts                   อัปโหลดรูป + สร้างลิงก์ดูรูปชั่วคราว
     admin.functions.ts          server functions จัดการผู้ใช้
-    admin.functions.ts          server functions จัดการผู้ใช้
   integrations/supabase/        client ที่ระบบสร้างให้อัตโนมัติ (ห้ามแก้เอง)
   test/                         ไฟล์ทดสอบ
 supabase/config.toml            อ้างอิงโปรเจกต์ backend
