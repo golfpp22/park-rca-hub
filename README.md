@@ -1,29 +1,193 @@
-# Welcome to your Lovable project
+# Go Inno Parking Ops
 
-This project was built with [Lovable](https://lovable.dev).
+ระบบบริหารจัดการลานจอดรถและงานซ่อมบำรุงอุปกรณ์ (ภาษาไทย) — ครบทั้งงานแจ้งซ่อม, ตรวจเช็กอุปกรณ์ประจำวัน, ส่วนลด, KPI พนักงาน, Dashboard ผู้บริหาร และหลังบ้าน Admin
 
-## Build with Lovable
+พัฒนาด้วย **TanStack Start v1** (React 19 + Vite) และใช้ **Lovable Cloud** เป็น backend (ฐานข้อมูล, การยืนยันตัวตน, ไฟล์รูปภาพ)
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+---
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+## 1. ฟีเจอร์หลัก
 
-## Development
+### แอปพนักงาน (หน้าจอมือถือ) — `/app`
+- **แจ้งซ่อม** ( `/app/report` ) เลือกลาน → อุปกรณ์ → ประเภทปัญหา → รายละเอียด + ถ่าย/แนบรูปหลายภาพ ระบบสร้างเลขงานอัตโนมัติ (เช่น `INC-0001`) และตั้งสถานะอุปกรณ์เป็น "ขัดข้อง"
+- **ตรวจเช็กประจำวัน** ( `/app/inspect` ) เลือกลาน → อุปกรณ์ แล้วกรอกผลตรวจเป็นรายการตามเทมเพลตตรวจเช็ก พร้อมแนบรูป
+- **งานของฉัน** ( `/app/jobs` ) ดูงานซ่อมที่ได้รับมอบหมาย, อัปเดตสถานะ, บันทึกสาเหตุและอะไหล่ที่ใช้
+- **ออกส่วนลด** ( `/app/discount` ) ออกส่วนลด/คูปองให้ลูกค้าและบันทึกสถิติ
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+### Console ผู้บริหาร / หัวหน้างาน — `/dashboard`, `/incidents`, ...
+- **Dashboard ผู้บริหาร** (โทนเข้ม, `/dashboard`)
+  - รายได้รายวัน/รายเดือน, ช่องทางชำระเงิน, แนวโน้มรายได้ 30 วัน
+  - **Heatmap ปริมาณรถรายชั่วโมง** แยกแต่ละจุดทางเข้า–ออก (เลือกได้: เข้า+ออก / รถเข้า / รถออก)
+  - สถานะอุปกรณ์และปัญหาล่าสุด
+  - เปลี่ยนวันที่ได้ผ่านช่องวันที่มุมขวาบน (เปิดหน้าขึ้นมาจะตั้งต้นเป็นวันปัจจุบันเสมอ)
+- **งานแจ้งซ่อม** ( `/incidents` ) รายการ + หน้าที่ (`/incidents/$id`) สำหรับมอบหมาย, เปลี่ยนสถานะ/ระดับความเร่งด่วน, บันทึก log ความคืบหน้า, แนบรูปหลังซ่อม
+- **รายงานตรวจเช็ก** ( `/inspections` ) สรุปผลตรวจเช็กประจำวันของแต่ละจุด
+- **KPI พนักงาน** ( `/kpi` ) จำนวนงาน, เวลาตอบสนอง/แก้ไข เทียบเกณฑ์ SLA
+- **รายงานส่วนลด** ( `/discounts` ) สรุปการใช้ส่วนลดและมูลค่าที่ออกไป
+
+### หลังบ้าน Admin — `/admin`, ...
+- **ผู้ใช้ & สิทธิ์** ( `/admin` ) เพิ่ม–แก้ไข–ลบพนักงาน, ตั้งรหัสผ่านใหม่, กำหนดสิทธิ์ 4 ระดับ
+- **จุดติดตั้ง & อุปกรณ์** ( `/admin/sites` ) จัดการลานจอดรถ/จุดทางเข้า-ออก และอุปกรณ์ของแต่ละจุด
+- **รายการตรวจเช็ก** ( `/admin/checklists` ) แก้ไขเทมเพลตรายการตรวจเช็กแต่ละประเภทอุปกรณ์
+- **ประเภทปัญหา** ( `/admin/problems` ) เพิ่ม–แก้ไข–ลบ–ปิดใช้งานประเภทปัญหาที่แสดงในฟอร์มแจ้งซ่อม
+
+### สิทธิ์ 4 ระดับ
+| ระดับ | ทำอะไรได้ | หน้าแรกหลังล็อกอิน |
+| --- | --- | --- |
+| `admin` ผู้ดูแลระบบ | ทุกอย่าง + หลังบ้าน | `/admin` |
+| `executive` ผู้บริหาร | Dashboard และรายงานทุกหน้า | `/dashboard` |
+| `operator` หัวหน้า/Operator | งานแจ้งซ่อม, ตรวจเช็ก, KPI, ส่วนลด | `/incidents` |
+| `technician` ช่างเทคนิค | ใช้แอปพนักงาน `/app` | `/app` |
+
+### การเข้าใช้งาน
+- เข้าระบบด้วย **รหัสพนักงาน + รหัสผ่าน** (ไม่ต้องใช้อีเมล) — ระบบแปลงรหัสพนักงานเป็นอีเมลภายในอัตโนมัติ (`รหัส@parking.local`)
+- ไม่มีระบบสมัครเอง: Admin เป็นผู้สร้างบัญชีพนักงานในหน้า `/admin`
+- ครั้งแรกที่ยังไม่มีผู้ดูแลระบบ จะขึ้นลิงก์ **"ตั้งค่าบัญชี Admin แรก"** ไปที่หน้า `/setup`
+
+---
+
+## 2. เทคโนโลยีที่ใช้
+
+| ส่วน | เทคโนโลยี |
+| --- | --- |
+| Framework | TanStack Start v1 (React 19, SSR/SSG, server functions) |
+| Routing | TanStack Router (file-based, ใน `src/routes`) |
+| Data fetching | TanStack Query |
+| Styling | Tailwind CSS v4 (`src/styles.css`) + shadcn/ui (Radix UI) |
+| กราฟ/แผนภูมิ | Recharts |
+| ฟอร์ม/validate | react-hook-form + zod |
+| ฐานข้อมูล/auth/storage | Lovable Cloud (Supabase) |
+| ทดสอบ | Vitest + Testing Library |
+| Build | Vite + Nitro (Cloudflare Workers) |
+
+---
+
+## 3. โครงสร้างโค้ด
+
+```text
+src/
+  routes/
+    __root.tsx                  โครงหน้าหลัก (Toaster, error page, head)
+    index.tsx                   หน้าเข้าสู่ระบบ
+    setup.tsx                   สร้างบัญชี Admin คนแรก
+    _authenticated/
+      route.tsx                 ตรวจล็อกอินก่อนเข้าทุกหน้า (redirect "/")
+      app.tsx + app.*.tsx       แอปพนักงาน (แจ้งซ่อม, ตรวจเช็ก, งานของฉัน, ส่วนลด)
+      _console.tsx              โครง Console + เมนู sidebar
+      _console.*.tsx            Dashboard, แจ้งซ่อม, ตรวจเช็ก, KPI, ส่วนลด, หลังบ้าน
+  components/
+    traffic-heatmap.tsx         ตาราง Heatmap รายชั่วโมง
+    incident-form.tsx           ฟอร์มเปิดงานแจ้งซ่อม
+    incident-detail.tsx         แสดง/แก้ไขงาน + log ความคืบหน้า
+    photos.tsx                  ตัวเลือกและแสดงรูป
+    badges.tsx, page.tsx        ป้ายสถานะและโครงหน้า
+  lib/
+    traffic-heatmap.ts          คำนวณข้อมูล heatmap (pure helper ทดสอบแยกได้)
+    labels.ts                   ชื่อสถานะ/ระดับความเร่งด่วน/สิทธิ์ + ฟอร์แมตวันที่
+    use-me.ts                   useMe, useSites, useProblemTypes, signOut
+    photos.ts                   อัปโหลดรูป + สร้างลิงก์ดูรูปชั่วคราว
+    admin.functions.ts          server functions จัดการผู้ใช้
+  integrations/supabase/        client ที่ระบบสร้างให้อัตโนมัติ (ห้ามแก้เอง)
+  test/                         ไฟล์ทดสอบ
+supabase/config.toml            อ้างอิงโปรเจกต์ backend
+```
+
+> โฟลเดอร์ `src/integrations/supabase/*` และไฟล์ `.env` ถูกสร้าง/อัปเดตอัตโนมัติโดย Lovable Cloud — ไม่ควรแก้ด้วยมือ
+
+---
+
+## 4. ฐานข้อมูล (สรุปตาราง)
+
+| ตาราง | ใช้เก็บอะไร |
+| --- | --- |
+| `profiles` | ข้อมูลพนักงาน (รหัสพนักงาน, ชื่อ, ตำแหน่ง) |
+| `user_roles` | สิทธิ์ 4 ระดับของแต่ละผู้ใช้ |
+| `sites` | จุดติดตั้ง/ลานจอดรถ (รหัส, ทิศทางทางเข้า-ออก) |
+| `equipment` | อุปกรณ์ของแต่ละจุด + สถานะ (ปกติ/ขัดข้อง) |
+| `checklist_templates` | รายการตรวจเช็กแยกตามประเภทอุปกรณ์ |
+| `inspections` / `inspection_results` | การตรวจเช็กประจำวันและผลรายข้อ |
+| `incidents` / `incident_logs` | งานแจ้งซ่อม, สาเหตุ, อะไหล่, รูปหลังซ่อม และ log ความคืบหน้า |
+| `discounts` | การออกส่วนลด |
+| `parking_hourly` | ปริมาณรถเข้า-ออกและรายได้รายชั่วโมง (สำหรับ Dashboard/Heatmap) |
+| `problem_types` | ประเภทปัญหาที่ Admin เพิ่ม-ลบ-แก้ไขได้ |
+
+- การเข้าถึงข้อมูลควบคุมด้วย RLS (ทุกตารางเปิด RLS + policy) โดยใช้ฟังก์ชัน `has_role` / `is_staff` / `is_manager`
+- รูปภาพเก็บใน storage bucket **"photos"** (เป็นส่วนตัว) — ฐานข้อมูลเก็บเฉพาะ path และเปิดดูผ่านลิงก์ชั่วคราว
+
+---
+
+## 5. ติดตั้งและรันโค้ด
+
+### สิ่งที่ต้องมี
+- **Node.js 20 ขึ้นไป** (แนะนำใช้ nvm: <https://github.com/nvm-sh/nvm#installing-and-updating>)
+- **Bun** หรือ npm สำหรับติดตั้งแพ็กเกจ (โปรเจกต์นี้มี `bun.lock`)
+
+### รันครั้งแรก
 
 ```sh
 git clone <this-repository-url>
 cd <repository-name>
-npm i
-npm run dev
+npm i            # หรือ: bun install
+npm run dev      # หรือ: bun run dev
 ```
 
-## Built with
+เปิด <http://localhost:8080> จะเจอหน้าเข้าสู่ระบบ
 
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
+> ตัวแปรเชื่อม backend (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_PROJECT_ID` ใน `.env`) ถูกใส่ให้อัตโนมัติเมื่อโปรเจกต์ต่อกับ Lovable Cloud — ไม่ต้องสร้างเอง ถ้ารันจากสำเนาโค้ดเปล่า ๆ ต้องต่อกับ Lovable Cloud ก่อนเพื่อสร้างไฟล์ `.env` และตารางในฐานข้อมูล
+
+### สร้างผู้ดูแลระบบคนแรก
+
+1. เปิด <http://localhost:8080> — จะเห็นกล่อง **"ตั้งค่าบัญชี Admin แรก"** (แสดงเมื่อระบบยังไม่มี Admin) กดเข้าไปที่ `/setup`
+2. กรอกรหัสพนักงาน (ค่าเริ่มต้น `ADMIN`), ชื่อ-นามสกุล และรหัสผ่าน (อย่างน้อย 8 ตัว)
+3. กลับมาที่หน้าแรก แล้วเข้าระบบด้วยรหัสพนักงาน + รหัสผ่านที่ตั้งไว้
+
+### คำสั่งที่ใช้บ่อย
+
+```sh
+npm run dev        # เซิร์ฟเวอร์สำหรับพัฒนา (hot reload)
+npm run build      # สร้างไฟล์สำหรับขึ้นระบบจริง
+npm run preview    # ทดลองดูไฟล์ที่ build แล้ว
+npm run test       # รันชุดทดสอบ 1 รอบ
+npm run test:watch # รันทดสอบแบบดูการเปลี่ยนแปลงไปเรื่อย ๆ
+npm run lint       # ตรวจโค้ดด้วย ESLint
+npm run format     # จัดรูปแบบโค้ดด้วย Prettier
+npx tsgo --noEmit  # ตรวจชนิดข้อมูล TypeScript
+```
+
+### การเผยแพร่ (deploy)
+
+- `npm run build` จะใช้ Nitro สร้างแพ็กเกจสำหรับ **Cloudflare Workers** (ค่าเริ่มต้นของโปรเจกต์)
+- วิธีที่ง่ายที่สุดคือกด **Publish** ใน Lovable — backend, ฐานข้อมูล และโดเมนจะถูกตั้งค่าให้ครบ
+- ถ้าต้องการโดเมนของตัวเอง สามารถเชื่อมต่อได้หลังเผยแพร่
+
+---
+
+## 6. การทดสอบ
+
+```sh
+npm run test
+```
+
+- `src/test/traffic-heatmap.test.ts` — ตรวจการคำนวณ Heatmap (แยกจุด/แยกชั่วโมง/ค่ารวม/ระดับสี)
+- `src/test/app-routing.test.tsx` — ตรวจเส้นทางและโครงหน้าของแอป
+
+---
+
+## 7. หมายเหตุด้านการเชื่อมต่ออุปกรณ์หน้างาน
+
+ข้อมูลรายได้, ปริมาณรถเข้า-ออก, ช่องทางชำระเงิน และ Heatmap ในตอนนี้มาจาก **ข้อมูลตัวอย่าง** ที่ seed ไว้ในตาราง `parking_hourly` ยังไม่ได้เชื่อมต่อจริงกับ:
+
+- Kiosk จ่ายบัตร
+- Kiosk ทางออก
+- ช่องทางชำระเงิน (บัตรเครดิต/e-wallet/QR)
+- ระบบออกส่วนลดอัตโนมัติ
+
+เมื่อพร้อม สามารถเพิ่ม server route ใต้ `src/routes/api/public/*` เพื่อรับข้อมูลจากเครื่องเหล่านั้นเข้ามาบันทึกในฐานข้อมูลได้ (ต้องมีการตรวจสอบผู้เรียกใน handler)
+
+---
+
+## 8. เชื่อมต่อกับ Lovable
+
+โปรเจกต์นี้ต่อกับ [Lovable](https://lovable.dev) — ถ้า push โค้ดเข้า GitHub ที่เชื่อมต่อไว้ การแก้ใน Lovable จะ commit เข้ามาให้เอง และการ push กลับมาก็จะ sync เข้ามาใน editor
+
+**ข้อควรระวัง:** อย่าเขียน git history ที่เผยแพร่ไปแล้วซ้ำ (force push / rebase / amend commit ที่ push แล้ว) เพราะจะทำให้ประวัติใน Lovable ขาดหาย
